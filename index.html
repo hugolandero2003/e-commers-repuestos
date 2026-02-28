@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MotoParts Pro | Tienda Oficial Colombia</title>
+    <title>Jp Partes | Tienda Oficial Colombia</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -18,24 +18,62 @@
         .font-logo { font-family: 'Orbitron', sans-serif; }
         .text-glow { text-shadow: 0 0 15px rgba(220, 38, 38, 0.4); }
         
-        /* Ajuste para que el catálogo no quede tapado por el menú sticky */
         #productos { scroll-margin-top: 100px; }
 
-        /* Estética scrollbar */
         #cart-items::-webkit-scrollbar { width: 5px; }
         #cart-items::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 10px; }
+
+        .img-container { overflow: hidden; cursor: zoom-in; }
+        .img-container img { transition: transform 0.5s ease; }
+        .img-container:hover img { transform: scale(1.1); }
+
+        /* --- ESTILOS CARRUSEL MARCAS --- */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-200px * 5)); }
+        }
+        .slider-brands {
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #1e293b;
+        }
+        .slide-track {
+            display: flex;
+            width: calc(200px * 10);
+            animation: scroll 15s linear infinite;
+        }
+        .slide {
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: grayscale(100%);
+            opacity: 0.4; /* Logos transparentes */
+            transition: opacity 0.3s;
+        }
+        .slide:hover { opacity: 1; filter: grayscale(0%); }
+        .slide img { width: 100px; height: auto; object-fit: contain; }
     </style>
 </head>
 <body class="text-slate-200">
 
-    <a href="https://wa.me/573000000000" target="_blank" class="fixed bottom-6 right-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-[200] flex items-center justify-center">
+    <div id="image-modal" class="fixed inset-0 bg-black/95 z-[300] hidden flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl animate__animated animate__zoomIn">
+        <p class="absolute bottom-10 text-white font-bold bg-black/50 px-4 py-2 rounded-full">Click en cualquier lado para cerrar</p>
+    </div>
+
+    <a href="https://wa.me/573156622814" target="_blank" class="fixed bottom-6 right-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-[200] flex items-center justify-center">
         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     </a>
 
     <nav class="fixed top-0 w-full bg-slate-900/95 backdrop-blur-md border-b border-red-600/30 z-[100] px-4 md:px-8 py-4 flex justify-between items-center">
         <div class="font-logo text-xl md:text-2xl text-red-600 flex items-center gap-2">
             <span class="bg-red-600 text-white px-2 py-0.5 rounded shadow-lg shadow-red-600/20">JP</span> 
-            <span class="tracking-tighter uppercase italic">INPORTACIONES<span class="text-white">JP</span></span>
+            <span class="tracking-tighter uppercase italic">IMPORTACIONES<span class="text-white">JP</span></span>
         </div>
         <button onclick="toggleCart()" class="relative p-2 bg-slate-800 rounded-xl border border-slate-700 hover:border-red-600 transition-all">
             <span class="text-xl">🛒</span>
@@ -52,10 +90,35 @@
                 <a href="#productos" class="inline-block bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-full font-bold transition-all shadow-xl shadow-red-600/20 uppercase tracking-widest text-sm">Explorar Catálogo</a>
             </div>
             <div class="hidden md:block animate__animated animate__zoomIn">
-                <img src="/img/banner2.jpg" class="rounded-[2rem] shadow-2xl border border-slate-800 shadow-red-900/10">
+                <img src="img/banner2.jpg" class="rounded-[2rem] shadow-2xl border border-slate-800 shadow-red-900/10">
             </div>
         </div>
     </header>
+
+    <div class="slider-brands">
+        <div class="slide-track">
+            <div class="slide"><span>YAMAHA</span></div>
+            <div class="slide"><span>SUZUKI</span></div>
+            <div class="slide"><span>AKT MOTOS</span></div>
+            <div class="slide"><span>HONDA</span></div>
+            <div class="slide"><span>BAJAJ</span></div>
+            <div class="slide"><span>KAWASAKI</span></div>
+            <div class="slide"><span>TVS</span></div>
+            <div class="slide"><span>KTM</span></div>
+            <div class="slide"><span>HERO</span></div>
+           
+            
+            <div class="slide"><span>YAMAHA</span></div>
+            <div class="slide"><span>SUZUKI</span></div>
+            <div class="slide"><span>AKT MOTOS</span></div>
+            <div class="slide"><span>HONDA</span></div>
+            <div class="slide"><span>BAJAJ</span></div>
+            <div class="slide"><span>KAWASAKI</span></div>
+            <div class="slide"><span>TVS</span></div>
+            <div class="slide"><span>KTM</span></div>
+            <div class="slide"><span>HERO</span></div>
+        </div>
+    </div>
 
     <section class="bg-slate-900/80 backdrop-blur-md sticky top-[72px] z-[50] py-6 border-y border-slate-800">
         <div class="container mx-auto px-4 max-w-4xl">
@@ -104,23 +167,32 @@
     </div>
 
     <script>
-        // DATOS DE PRODUCTOS
         const productos = [
-            { id: 1, nombre: "Empaque Tapa Volanta Eco Delux Encendido/Akt 110 Darrow ", precio: 20, stock: 100, imagen:"img/stok1empaquevolanta.jpg" },
-            { id: 2, nombre: "Empaque Tapa Clutch Ax4 Darrow", precio: 10, stock: 100, imagen: "img/stok2.jpg" },
-            { id: 3, nombre: "Empaque Tapa Clutch C70-C90-ECO100-AK110S-PASSION-DELUXE-NXG100 Darrow", precio: 20, stock: 100, imagen: "img/stok3.jpg" },
-            { id: 4, nombre: "Empaque Tapa Clutch TVS 100 STAR", precio: 10, stock: 100, imagen: "img/stok4.jpg" },
-            { id: 5, nombre: "Casco AGV K3 Black", precio: 890000, stock: 2, imagen: "https://via.placeholder.com/400x300/1e293b/ef4444?text=Casco+AGV" },
-            { id: 6, nombre: "Cadena Oro DID 520", precio: 320000, stock: 10, imagen: "https://via.placeholder.com/400x300/1e293b/ef4444?text=Cadena+DID" }
+            { id: 1, nombre: "Empaque Tapa Volanta Eco Delux Encendido/Akt 110 Darrow ", precio: 20000, stock: 100, imagen:"img/stok1empaquevolanta.jpg" },
+            { id: 2, nombre: "Empaque Tapa Clutch Ax4 Darrow", precio: 10000, stock: 100, imagen: "img/stok2.jpg" },
+            { id: 3, nombre: "Empaque Tapa Clutch C70-C90-ECO100-AK110S-PASSION-DELUXE-NXG100 Darrow", precio: 20000, stock: 100, imagen: "img/stok3.jpg" },
+            { id: 4, nombre: "Empaque Tapa Clutch TVS 100 STAR", precio: 10000, stock: 100, imagen: "img/stok4.jpg" },
+            { id: 5, nombre: "Empaque Tapa Clutch XCD 125/PLATINO 125 FD-ST/PULSAR 135 Darrow", precio: 20000, stock: 100, imagen: "img/stok5.jpg" },
+            { id: 6, nombre: "Empaque Kit Medio AKT 125 NKD Darrow", precio: 20000, stock: 100, imagen: "img/stok6.jpg" },
+            { id: 7, nombre: "Empaque Kit Medio CBF 125 Darrow", precio: 20000, stock: 100, imagen: "img/stok7.jpg" },
+            { id: 8, nombre: "Empaque Kit Medio ECO 100 STARTER Darrow", precio: 20000, stock: 100, imagen: "img/stok8.jpg" }
+
         ];
 
         let carrito = [];
+
+        function verImagen(src) {
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('modal-img');
+            img.src = src;
+            modal.classList.remove('hidden');
+        }
 
         function renderProductos(lista) {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = lista.map(p => `
                 <div class="product-card bg-slate-800/40 border border-slate-800 rounded-3xl overflow-hidden backdrop-blur-sm flex flex-col animate__animated animate__fadeIn">
-                    <div class="relative">
+                    <div class="img-container relative" onclick="verImagen('${p.imagen}')">
                         <img src="${p.imagen}" class="w-full h-56 object-cover">
                         <span class="absolute top-4 right-4 ${p.stock < 5 ? 'text-orange-500 bg-orange-500/10 border-orange-500' : 'text-green-500 bg-green-500/10 border-green-500'} text-[10px] font-bold px-3 py-1 rounded-full border">
                             Stock: ${p.stock}
@@ -190,14 +262,13 @@
             renderProductos(productos.filter(p => p.nombre.toLowerCase().includes(query)));
         }
 
-        // --- PASARELA EPAYCO ---
         function pagarConEPayco() {
             const totalStr = document.getElementById('cart-total').innerText.replace(/\./g, '');
             const total = parseInt(totalStr);
             if(total === 0) return alert("Añade productos");
-
+                //PENDIENTE KEY DE EPAYCO 
             const handler = ePayco.checkout.configure({
-                key: 'TU_PUBLIC_KEY_AQUÍ', // IMPORTANTE: Pon tu Public Key de ePayco aquí
+                key: 'TU_PUBLIC_KEY_AQUÍ',
                 test: true 
             });
 
@@ -214,10 +285,9 @@
         function pagarAlternativo() {
             const total = document.getElementById('cart-total').innerText;
             const msg = `🏍️ *PEDIDO MOTOPARTS*%0A*Total:* $${total}%0A*Items:* ${carrito.map(i => i.nombre).join(', ')}`;
-            window.open(`https://wa.me/573000000000?text=${msg}`, '_blank');
+            window.open(`https://wa.me/573156622814?text=${msg}`, '_blank');
         }
 
-        // --- PAYPAL ---
         paypal.Buttons({
             createOrder: (data, actions) => {
                 const totalUSD = (parseInt(document.getElementById('cart-total').innerText.replace(/\./g, '')) / 4000).toFixed(2);
@@ -228,7 +298,6 @@
             }
         }).render('#paypal-button-container');
 
-        // Inicialización
         window.onload = () => renderProductos(productos);
     </script>
 </body>
