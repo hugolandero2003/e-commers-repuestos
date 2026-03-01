@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     
     <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 
     <style>
         :root { --racing-red: #dc2626; --dark-carbon: #0f172a; }
@@ -19,112 +18,87 @@
         .text-glow { text-shadow: 0 0 15px rgba(220, 38, 38, 0.4); }
         
         #productos { scroll-margin-top: 100px; }
-
         #cart-items::-webkit-scrollbar { width: 5px; }
         #cart-items::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 10px; }
 
-        .img-container { overflow: hidden; cursor: zoom-in; }
-        .img-container img { transition: transform 0.5s ease; }
+        /* EFECTO DE IMAGEN RESTAURADO */
+        .img-container { overflow: hidden; cursor: zoom-in; position: relative; }
+        .img-container img { transition: transform 0.5s ease; width: 100%; height: 100%; object-cover: cover; }
         .img-container:hover img { transform: scale(1.1); }
 
-        /* --- ESTILOS CARRUSEL MARCAS --- */
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-200px * 5)); }
-        }
-        .slider-brands {
-            width: 100%;
-            height: 100px;
-            overflow: hidden;
-            background: #0f172a;
-            display: flex;
-            align-items: center;
-            border-top: 1px solid #1e293b;
-        }
-        .slide-track {
-            display: flex;
-            width: calc(200px * 10);
-            animation: scroll 15s linear infinite;
-        }
-        .slide {
-            width: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            filter: grayscale(100%);
-            opacity: 0.4; /* Logos transparentes */
-            transition: opacity 0.3s;
-        }
-        .slide:hover { opacity: 1; filter: grayscale(0%); }
-        .slide img { width: 100px; height: auto; object-fit: contain; }
+        /* Carrusel Brands */
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-200px * 9)); } }
+        .slider-brands { width: 100%; height: 80px; overflow: hidden; background: #0f172a; display: flex; align-items: center; border-top: 1px solid #1e293b; }
+        .slide-track { display: flex; width: calc(200px * 18); animation: scroll 25s linear infinite; }
+        .slide { width: 200px; display: flex; justify-content: center; align-items: center; filter: grayscale(100%); opacity: 0.4; transition: 0.3s; color: white; font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; }
+        .slide:hover { opacity: 1; filter: grayscale(0%); color: #dc2626; }
+
+        /* Toast */
+        #toast { visibility: hidden; min-width: 250px; background-color: #dc2626; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 500; bottom: 30px; left: 50%; transform: translateX(-50%); box-shadow: 0 10px 25px rgba(220,38,38,0.4); }
+        #toast.show { visibility: visible; animation: fadeInUp 0.5s, fadeOutDown 0.5s 2.5s; }
+
+        @keyframes fadeInUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeOutDown { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body class="text-slate-200">
 
+    <div id="toast">¡Producto añadido con éxito! 🏎️</div>
+
     <div id="image-modal" class="fixed inset-0 bg-black/95 z-[300] hidden flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
         <img id="modal-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl animate__animated animate__zoomIn">
-        <p class="absolute bottom-10 text-white font-bold bg-black/50 px-4 py-2 rounded-full">Click en cualquier lado para cerrar</p>
     </div>
 
-    <a href="https://wa.me/573156622814" target="_blank" class="fixed bottom-6 right-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-[200] flex items-center justify-center">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-    </a>
+    <div id="qty-modal" class="fixed inset-0 bg-black/90 z-[400] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-8 shadow-2xl animate__animated animate__zoomIn">
+            <h3 id="qty-title" class="text-white font-bold text-xl mb-2 text-center">Seleccionar Cantidad</h3>
+            <p id="qty-stock" class="text-slate-500 text-sm text-center mb-6"></p>
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <button onclick="changeQty(-1)" class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-full text-2xl font-bold hover:bg-red-600 transition-colors">-</button>
+                <span id="qty-value" class="text-4xl font-bold text-white w-12 text-center">1</span>
+                <button onclick="changeQty(1)" class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-full text-2xl font-bold hover:bg-red-600 transition-colors">+</button>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeQtyModal()" class="flex-1 py-3 text-slate-400 font-bold hover:text-white transition-colors">Cancelar</button>
+                <button id="confirm-qty-btn" class="flex-[2] bg-red-600 py-3 rounded-xl font-bold text-white shadow-lg shadow-red-900/30 hover:bg-red-700 transition-all uppercase tracking-widest text-sm">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <nav class="fixed top-0 w-full bg-slate-900/95 backdrop-blur-md border-b border-red-600/30 z-[100] px-4 md:px-8 py-4 flex justify-between items-center">
         <div class="font-logo text-xl md:text-2xl text-red-600 flex items-center gap-2">
             <span class="bg-red-600 text-white px-2 py-0.5 rounded shadow-lg shadow-red-600/20">JP</span> 
             <span class="tracking-tighter uppercase italic">IMPORTACIONES<span class="text-white">JP</span></span>
         </div>
-        <button onclick="toggleCart()" class="relative p-2 bg-slate-800 rounded-xl border border-slate-700 hover:border-red-600 transition-all">
-            <span class="text-xl">🛒</span>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-slate-900">0</span>
+        <button onclick="toggleCart()" class="relative p-3 bg-slate-800 rounded-2xl border border-slate-700 hover:border-red-600 transition-all group">
+            <span class="text-xl group-hover:scale-110 inline-block transition-transform">🛒</span>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold h-6 w-6 flex items-center justify-center rounded-full border-2 border-slate-900 animate__animated animate__bounceIn">0</span>
         </button>
     </nav>
 
-    <header class="relative pt-32 pb-16 md:pt-48 md:pb-32 overflow-hidden">
+    <header class="relative pt-32 pb-16 md:pt-48 md:pb-32 overflow-hidden text-center md:text-left">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/10 via-slate-950 to-slate-950 -z-10"></div>
         <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="animate__animated animate__fadeInLeft text-center md:text-left">
-                <h1 class="font-logo text-4xl md:text-7xl font-bold text-white leading-tight uppercase tracking-tighter">PARTES <br> <span class="text-red-600 text-glow italic">JP</span></h1>
-                <p class="text-slate-400 text-lg mt-6 mb-8 max-w-md mx-auto md:mx-0 border-l-4 border-red-600 pl-4">Repuestos de alta calidad para motocicletas en Colombia.</p>
-                <a href="#productos" class="inline-block bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-full font-bold transition-all shadow-xl shadow-red-600/20 uppercase tracking-widest text-sm">Explorar Catálogo</a>
+            <div class="animate__animated animate__fadeInLeft">
+                <h1 class="font-logo text-5xl md:text-8xl font-bold text-white leading-tight uppercase tracking-tighter">PARTES <br> <span class="text-red-600 text-glow italic">JP</span></h1>
+                <p class="text-slate-400 text-lg mt-6 mb-8 max-w-md mx-auto md:mx-0 border-l-4 border-red-600 pl-4 uppercase tracking-wide font-light">
+                    Potencia tu pasión con repuestos de alto rendimiento. <br>
+                    <span class="text-white font-bold italic">Garantía total, envíos a toda Colombia.</span> <br>
+                    No te detengas, mantén tu máquina al 100% con confianza.
+                </p>
+                <a href="#productos" class="inline-block bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-full font-bold transition-all shadow-xl shadow-red-600/20 uppercase tracking-[0.2em] text-xs">Ver Catálogo</a>
             </div>
             <div class="hidden md:block animate__animated animate__zoomIn">
-                <img src="img/banner2.jpg" class="rounded-[2rem] shadow-2xl border border-slate-800 shadow-red-900/10">
+                <img src="img/banner2.jpg" class="rounded-[3rem] shadow-2xl border border-slate-800">
             </div>
         </div>
     </header>
 
-    <div class="slider-brands">
-        <div class="slide-track">
-            <div class="slide"><span>YAMAHA</span></div>
-            <div class="slide"><span>SUZUKI</span></div>
-            <div class="slide"><span>AKT MOTOS</span></div>
-            <div class="slide"><span>HONDA</span></div>
-            <div class="slide"><span>BAJAJ</span></div>
-            <div class="slide"><span>KAWASAKI</span></div>
-            <div class="slide"><span>TVS</span></div>
-            <div class="slide"><span>KTM</span></div>
-            <div class="slide"><span>HERO</span></div>
-           
-            
-            <div class="slide"><span>YAMAHA</span></div>
-            <div class="slide"><span>SUZUKI</span></div>
-            <div class="slide"><span>AKT MOTOS</span></div>
-            <div class="slide"><span>HONDA</span></div>
-            <div class="slide"><span>BAJAJ</span></div>
-            <div class="slide"><span>KAWASAKI</span></div>
-            <div class="slide"><span>TVS</span></div>
-            <div class="slide"><span>KTM</span></div>
-            <div class="slide"><span>HERO</span></div>
-        </div>
-    </div>
-
-    <section class="bg-slate-900/80 backdrop-blur-md sticky top-[72px] z-[50] py-6 border-y border-slate-800">
+    <section class="bg-slate-900/80 backdrop-blur-md sticky top-[80px] z-[50] py-6 border-y border-slate-800">
         <div class="container mx-auto px-4 max-w-4xl">
             <div class="relative group">
-                <input type="text" id="search-input" placeholder="¿Qué pieza necesitas hoy?" 
-                    class="w-full bg-slate-950 border-2 border-slate-800 text-white rounded-2xl py-4 pl-14 pr-6 focus:border-red-600 outline-none transition-all shadow-2xl"
+                <input type="text" id="search-input" placeholder="Buscar repuesto..." 
+                    class="w-full bg-slate-950 border-2 border-slate-800 text-white rounded-3xl py-5 pl-14 pr-6 focus:border-red-600 outline-none transition-all shadow-2xl"
                     onkeyup="filtrarProductos()">
                 <span class="absolute left-5 top-1/2 -translate-y-1/2 text-2xl group-focus-within:text-red-600 transition-colors">🔍</span>
             </div>
@@ -132,124 +106,188 @@
     </section>
 
     <main id="productos" class="container mx-auto px-4 py-16">
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+        
+        <div id="pagination-controls" class="flex justify-center items-center mt-16 gap-3 flex-wrap"></div>
     </main>
+
+    <a href="https://wa.me/573156622814" target="_blank" class="fixed bottom-6 right-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-[200]">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
 
     <div id="overlay" class="fixed inset-0 bg-black/80 z-[110] hidden backdrop-blur-md" onclick="toggleCart()"></div>
     <div id="cart-modal" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 z-[120] hidden flex flex-col shadow-2xl border-l border-slate-800">
         <div class="p-6 bg-slate-950 flex justify-between items-center border-b border-slate-800">
             <h3 class="font-logo text-xl text-white italic">MI PEDIDO</h3>
-            <button onclick="toggleCart()" class="text-slate-500 hover:text-white transition-all text-3xl">&times;</button>
+            <button onclick="toggleCart()" class="text-slate-500 hover:text-white text-4xl">&times;</button>
         </div>
-        
-        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4">
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
+        <div class="p-8 bg-slate-950 border-t border-slate-800 space-y-4">
+            <div class="flex justify-between items-end">
+                <span class="text-slate-400 font-bold uppercase text-[10px]">Total:</span>
+                <span class="text-4xl font-bold text-red-500 leading-none">$<span id="cart-total">0.00</span></span>
             </div>
-
-        <div class="p-8 bg-slate-950 border-t border-slate-800 space-y-6">
-            <div class="flex justify-between items-center">
-                <span class="text-slate-400 font-bold uppercase text-xs">Total:</span>
-                <span class="text-3xl font-bold text-red-500">$<span id="cart-total">0.00</span></span>
-            </div>
-
-            <div class="space-y-3">
-                <button onclick="pagarConEPayco()" class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-4 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-900/20 uppercase tracking-widest text-xs">
-                    💳 Tarjetas / PSE / Nequi
-                </button>
-
-                <div id="paypal-button-container"></div>
-                
-                <button onclick="pagarAlternativo()" class="w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-xl border border-slate-700 hover:bg-slate-700 transition flex items-center justify-center gap-2 text-xs">
-                    💬 Soporte WhatsApp
-                </button>
-            </div>
+            <button onclick="pagarAlternativo()" class="w-full bg-red-600 text-white font-bold py-4 rounded-xl hover:bg-red-700 transition-all uppercase text-xs tracking-widest">WhatsApp Directo</button>
         </div>
     </div>
 
     <script>
         const productos = [
-            { id: 1, nombre: "Empaque Tapa Volanta Eco Delux Encendido/Akt 110 Darrow ", precio: 20000, stock: 100, imagen:"img/stok1empaquevolanta.jpg" },
+            { id: 1, nombre: "Empaque Tapa Volanta Eco Delux/Akt 110", precio: 20000, stock: 100, imagen:"img/stok1empaquevolanta.jpg" },
             { id: 2, nombre: "Empaque Tapa Clutch Ax4 Darrow", precio: 10000, stock: 100, imagen: "img/stok2.jpg" },
-            { id: 3, nombre: "Empaque Tapa Clutch C70-C90-ECO100-AK110S-PASSION-DELUXE-NXG100 Darrow", precio: 20000, stock: 100, imagen: "img/stok3.jpg" },
+            { id: 3, nombre: "Empaque Tapa Clutch C70-C90-ECO100", precio: 20000, stock: 100, imagen: "img/stok3.jpg" },
             { id: 4, nombre: "Empaque Tapa Clutch TVS 100 STAR", precio: 10000, stock: 100, imagen: "img/stok4.jpg" },
-            { id: 5, nombre: "Empaque Tapa Clutch XCD 125/PLATINO 125 FD-ST/PULSAR 135 Darrow", precio: 20000, stock: 100, imagen: "img/stok5.jpg" },
-            { id: 6, nombre: "Empaque Kit Medio AKT 125 NKD Darrow", precio: 20000, stock: 100, imagen: "img/stok6.jpg" },
+            { id: 5, nombre: "Empaque Tapa Clutch XCD 125/PLATINO 125", precio: 20000, stock: 100, imagen: "img/stok5.jpg" },
+            { id: 6, nombre: "Empaque Kit Medio AKT 125 NKD", precio: 20000, stock: 100, imagen: "img/stok6.jpg" },
             { id: 7, nombre: "Empaque Kit Medio CBF 125 Darrow", precio: 20000, stock: 100, imagen: "img/stok7.jpg" },
-            { id: 8, nombre: "Empaque Kit Medio ECO 100 STARTER Darrow", precio: 20000, stock: 100, imagen: "img/stok8.jpg" }
-
+            { id: 8, nombre: "Empaque Kit Medio ECO 100 STARTER", precio: 20000, stock: 100, imagen: "img/stok8.jpg" },
+            { id: 9, nombre: "Empaque Mofle RX/DT/AX/TS/KW/JC", precio: 20000, stock: 100, imagen: "img/stok9.jpg" },
+            { id: 10, nombre: "Empaque Cilindro BOXER CT Darrow", precio: 20000, stock: 100, imagen: "img/stok10.jpg" },
+            { id: 11, nombre: "Empaque Completo AKT 125 SL Darrow", precio: 20000, stock: 100, imagen: "img/stok11.jpg" },
+            { id: 12, nombre: "Aceite 4T KIXX Ultra 20w/50", precio: 20000, stock: 100, imagen: "img/stok12.jpg" },
+            { id: 13, nombre: "Aceite Mineral W SN 20W-50", precio: 20000, stock: 100, imagen: "img/stok13.jpg" },
+            { id: 14, nombre: "Canastilla Cluctch AX4 Lifu Sola", precio: 20000, stock: 100, imagen: "img/stok14.jpg" },
+            { id: 15, nombre: "Eje Cluctch DISCOVER/PLATINO Original", precio: 20000, stock: 100, imagen: "img/stok15.jpg" },
+            { id: 16, nombre: "Eje Salida Cuarta BOXER/DISCOVER Original", precio: 20000, stock: 100, imagen: "img/stok16.jpg" },
+            { id: 17, nombre: "Leva Clutch DICOVER BAJAJ Original", precio: 20000, stock: 100, imagen: "img/stok17.jpg" },
+            { id: 18, nombre: "Velocimetro Completo AKT SL/NKD GF", precio: 20000, stock: 100, imagen: "img/stok18.jpg" },
+            { id: 19, nombre: "Velocimetro Completo AX100 GF", precio: 20000, stock: 100, imagen: "img/stok19.jpg" },
+            { id: 20, nombre: "Velocimetro Digital FZ16 GF", precio: 20000, stock: 100, imagen: "img/stok20.jpg" },
+            { id: 21, nombre: "Valvulas AKT/ CG250 GF", precio: 20000, stock: 100, imagen: "img/stok21.jpg" },
+            { id: 22, nombre: "Tornillo Porta Sporcket Kit AX100", precio: 20000, stock: 100, imagen: "img/stok22.jpg" },
+            { id: 23, nombre: "Tornillo Manecilla Universal (X 100)", precio: 20000, stock: 100, imagen: "img/stok23.jpg" },
+            { id: 24, nombre: "Tornillo Porta Sporcket Kit GN 125", precio: 20000, stock: 100, imagen: "img/stok24.jpg" },
+            { id: 25, nombre: "Tornillo Porta Sporcket Kit GN 125 V2", precio: 20000, stock: 100, imagen: "img/stok25.jpg" },
+            { id: 26, nombre: "Tapa Tanque AX100 GF", precio: 20000, stock: 100, imagen: "img/stok26.jpg" }
         ];
 
+        let paginaActual = 1;
+        const productosPorPagina = 8;
+        let listaMostrada = [...productos];
         let carrito = [];
+        let currentQtyProduct = null;
+        let currentQtyVal = 1;
 
-        function verImagen(src) {
-            const modal = document.getElementById('image-modal');
-            const img = document.getElementById('modal-img');
-            img.src = src;
-            modal.classList.remove('hidden');
-        }
-
-        function renderProductos(lista) {
+        // RENDERIZADO CON EFECTOS RESTAURADOS
+        function renderProductos() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = lista.map(p => `
-                <div class="product-card bg-slate-800/40 border border-slate-800 rounded-3xl overflow-hidden backdrop-blur-sm flex flex-col animate__animated animate__fadeIn">
-                    <div class="img-container relative" onclick="verImagen('${p.imagen}')">
-                        <img src="${p.imagen}" class="w-full h-56 object-cover">
-                        <span class="absolute top-4 right-4 ${p.stock < 5 ? 'text-orange-500 bg-orange-500/10 border-orange-500' : 'text-green-500 bg-green-500/10 border-green-500'} text-[10px] font-bold px-3 py-1 rounded-full border">
-                            Stock: ${p.stock}
-                        </span>
+            const inicio = (paginaActual - 1) * productosPorPagina;
+            const fragmento = listaMostrada.slice(inicio, inicio + productosPorPagina);
+
+            grid.innerHTML = fragmento.map(p => `
+                <div class="product-card group bg-slate-800/30 border border-slate-800 hover:border-red-600/50 rounded-[2rem] overflow-hidden flex flex-col transition-all animate__animated animate__fadeIn">
+                    <div class="img-container aspect-square" onclick="verImagen('${p.imagen}')">
+                        <img src="${p.imagen}" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-white text-[10px] font-bold uppercase tracking-widest">Ampliar Imagen</span>
+                        </div>
+                        <span class="absolute top-4 right-4 ${p.stock < 5 ? 'text-orange-500 bg-orange-500/10 border-orange-500' : 'text-green-500 bg-green-500/10 border-green-500'} text-[10px] font-bold px-3 py-1 rounded-full border backdrop-blur-md">STOCK: ${p.stock}</span>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
+                    <div class="p-8 flex flex-col flex-grow">
                         <h3 class="font-bold text-lg text-white mb-4 h-14 line-clamp-2">${p.nombre}</h3>
                         <div class="flex justify-between items-center mt-auto">
-                            <div>
-                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Precio COP</p>
-                                <p class="text-2xl font-bold text-white leading-none">$${p.precio.toLocaleString()}</p>
-                            </div>
-                            <button onclick="agregarAlCarrito(${p.id})" class="bg-red-600 hover:bg-white hover:text-red-600 text-white font-bold w-12 h-12 rounded-2xl transition-all shadow-lg flex items-center justify-center text-xl">
-                                +
-                            </button>
+                            <p class="text-2xl font-bold text-white">$${p.precio.toLocaleString()}</p>
+                            <button onclick="openQtyModal(${p.id})" class="bg-red-600 hover:bg-white hover:text-red-600 text-white font-bold w-12 h-12 rounded-xl transition-all shadow-xl flex items-center justify-center text-xl">+</button>
                         </div>
                     </div>
                 </div>`).join('');
+            actualizarPaginador();
         }
 
-        function agregarAlCarrito(id) {
-            const p = productos.find(x => x.id === id);
-            if(p && p.stock > 0) {
-                p.stock--;
-                carrito.push({...p});
-                actualizarInterfaz();
-                renderProductos(productos);
-            } else { alert("Sin stock disponible"); }
+        function verImagen(src) {
+            document.getElementById('modal-img').src = src;
+            document.getElementById('image-modal').classList.remove('hidden');
         }
 
-        function eliminar(index, id) {
-            productos.find(p => p.id === id).stock++;
-            carrito.splice(index, 1);
+        // PAGINADOR MEJORADO CON FLECHAS
+        function actualizarPaginador() {
+            const controles = document.getElementById('pagination-controls');
+            const totalPaginas = Math.ceil(listaMostrada.length / productosPorPagina);
+            if (totalPaginas <= 1) { controles.innerHTML = ''; return; }
+
+            let html = '';
+            html += `<button onclick="cambiarPagina(${paginaActual - 1})" ${paginaActual === 1 ? 'disabled' : ''} class="w-12 h-12 rounded-2xl border flex items-center justify-center transition-all ${paginaActual === 1 ? 'opacity-20 cursor-not-allowed border-slate-800' : 'bg-slate-800 border-slate-700 hover:border-red-600 hover:scale-110'}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>`;
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                html += `<button onclick="cambiarPagina(${i})" class="w-12 h-12 rounded-2xl font-bold transition-all border ${paginaActual === i ? 'bg-red-600 border-red-600 text-white shadow-xl' : 'bg-slate-800 border-slate-700 text-slate-500 hover:border-red-600'}">${i}</button>`;
+            }
+
+            html += `<button onclick="cambiarPagina(${paginaActual + 1})" ${paginaActual === totalPaginas ? 'disabled' : ''} class="w-12 h-12 rounded-2xl border flex items-center justify-center transition-all ${paginaActual === totalPaginas ? 'opacity-20 cursor-not-allowed border-slate-800' : 'bg-slate-800 border-slate-700 hover:border-red-600 hover:scale-110'}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>`;
+
+            controles.innerHTML = html;
+        }
+
+        function cambiarPagina(p) {
+            paginaActual = p; 
+            renderProductos(); 
+            window.scrollTo({top: document.getElementById('productos').offsetTop - 120, behavior: 'smooth'}); 
+        }
+
+        // FUNCIONES DE CARRITO Y MODALES
+        function openQtyModal(id) {
+            currentQtyProduct = productos.find(p => p.id === id);
+            currentQtyVal = 1;
+            document.getElementById('qty-title').innerText = currentQtyProduct.nombre;
+            document.getElementById('qty-stock').innerText = `Disponibles: ${currentQtyProduct.stock}`;
+            document.getElementById('qty-value').innerText = currentQtyVal;
+            document.getElementById('qty-modal').classList.remove('hidden');
+            document.getElementById('confirm-qty-btn').onclick = confirmAddToCart;
+        }
+
+        function closeQtyModal() { document.getElementById('qty-modal').classList.add('hidden'); }
+
+        function changeQty(v) {
+            let next = currentQtyVal + v;
+            if(next > 0 && next <= currentQtyProduct.stock) {
+                currentQtyVal = next;
+                document.getElementById('qty-value').innerText = currentQtyVal;
+            }
+        }
+
+        function confirmAddToCart() {
+            const p = currentQtyProduct;
+            p.stock -= currentQtyVal;
+            const ex = carrito.find(i => i.id === p.id);
+            if(ex) { ex.cantidad += currentQtyVal; ex.total = ex.cantidad * p.precio; }
+            else { carrito.push({ id: p.id, nombre: p.nombre, precio: p.precio, cantidad: currentQtyVal, total: currentQtyVal * p.precio }); }
+            showToast(`¡Añadido: ${p.nombre}!`);
+            closeQtyModal();
             actualizarInterfaz();
-            renderProductos(productos);
+            renderProductos();
+        }
+
+        function showToast(m) {
+            const t = document.getElementById('toast');
+            t.innerText = m; t.className = "show";
+            setTimeout(() => t.className = "", 3000);
         }
 
         function actualizarInterfaz() {
             document.getElementById('cart-count').innerText = carrito.length;
-            const container = document.getElementById('cart-items');
             let total = 0;
-            if(carrito.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 opacity-30 italic">No hay productos</div>`;
-            } else {
+            const container = document.getElementById('cart-items');
+            if(carrito.length === 0) container.innerHTML = `<p class="text-center opacity-20">Carrito vacío</p>`;
+            else {
                 container.innerHTML = carrito.map((item, index) => {
-                    total += item.precio;
-                    return `
-                    <div class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-2xl border border-slate-700 animate__animated animate__fadeInRight">
-                        <div class="flex-grow">
-                            <h4 class="text-xs font-bold text-white">${item.nombre}</h4>
-                            <p class="text-red-500 font-bold">$${item.precio.toLocaleString()}</p>
-                        </div>
-                        <button onclick="eliminar(${index}, ${item.id})" class="text-slate-500 hover:text-red-500 text-xl font-bold">&times;</button>
+                    total += item.total;
+                    return `<div class="bg-slate-800/40 p-4 rounded-2xl flex justify-between border border-slate-800">
+                        <div><p class="text-[10px] font-bold text-white uppercase">${item.nombre}</p><p class="text-red-500 text-[10px]">CANT: ${item.cantidad}</p></div>
+                        <p class="font-bold text-white">$${item.total.toLocaleString()}</p>
                     </div>`;
                 }).join('');
             }
             document.getElementById('cart-total').innerText = total.toLocaleString();
+        }
+
+        function filtrarProductos() {
+            const q = document.getElementById('search-input').value.toLowerCase();
+            listaMostrada = productos.filter(p => p.nombre.toLowerCase().includes(q));
+            paginaActual = 1;
+            renderProductos();
         }
 
         function toggleCart() {
@@ -257,48 +295,13 @@
             document.getElementById('overlay').classList.toggle('hidden');
         }
 
-        function filtrarProductos() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            renderProductos(productos.filter(p => p.nombre.toLowerCase().includes(query)));
-        }
-
-        function pagarConEPayco() {
-            const totalStr = document.getElementById('cart-total').innerText.replace(/\./g, '');
-            const total = parseInt(totalStr);
-            if(total === 0) return alert("Añade productos");
-                //PENDIENTE KEY DE EPAYCO 
-            const handler = ePayco.checkout.configure({
-                key: 'TU_PUBLIC_KEY_AQUÍ',
-                test: true 
-            });
-
-            const data = {
-                name: "Compra MotoParts Pro",
-                description: carrito.map(i => i.nombre).join(", "),
-                currency: "cop", 
-                amount: total.toString(),
-                tax_base: "0", tax: "0", country: "co", lang: "es", external: "false",
-            };
-            handler.open(data);
-        }
-
         function pagarAlternativo() {
-            const total = document.getElementById('cart-total').innerText;
-            const msg = `🏍️ *PEDIDO MOTOPARTS*%0A*Total:* $${total}%0A*Items:* ${carrito.map(i => i.nombre).join(', ')}`;
+            const t = document.getElementById('cart-total').innerText;
+            const msg = `🏍️ *PEDIDO JP IMPORTACIONES*%0A*Total:* $${t}%0A*Items:*%0A${carrito.map(i => `• ${i.cantidad}x ${i.nombre}`).join('%0A')}`;
             window.open(`https://wa.me/573156622814?text=${msg}`, '_blank');
         }
 
-        paypal.Buttons({
-            createOrder: (data, actions) => {
-                const totalUSD = (parseInt(document.getElementById('cart-total').innerText.replace(/\./g, '')) / 4000).toFixed(2);
-                return actions.order.create({ purchase_units: [{ amount: { value: totalUSD } }] });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then(() => { alert('Pago PayPal Exitoso'); carrito = []; actualizarInterfaz(); toggleCart(); });
-            }
-        }).render('#paypal-button-container');
-
-        window.onload = () => renderProductos(productos);
+        window.onload = renderProductos;
     </script>
 </body>
 </html>
