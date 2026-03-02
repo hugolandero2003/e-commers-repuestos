@@ -23,10 +23,10 @@
 
         /* EFECTO DE IMAGEN RESTAURADO */
         .img-container { overflow: hidden; cursor: zoom-in; position: relative; }
-        .img-container img { transition: transform 0.5s ease; width: 100%; height: 100%; object-cover: cover; }
+        .img-container img { transition: transform 0.5s ease; width: 100%; height: 100%; object-fit: cover; }
         .img-container:hover img { transform: scale(1.1); }
 
-        /* Carrusel Brands */
+        /* Carrusel Brands RESTAURADO */
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-200px * 9)); } }
         .slider-brands { width: 100%; height: 80px; overflow: hidden; background: #0f172a; display: flex; align-items: center; border-top: 1px solid #1e293b; }
         .slide-track { display: flex; width: calc(200px * 18); animation: scroll 25s linear infinite; }
@@ -94,6 +94,79 @@
         </div>
     </header>
 
+    <div class="slider-brands">
+        <div class="slide-track">
+            <div class="slide">YAMAHA</div><div class="slide">HONDA</div><div class="slide">SUZUKI</div>
+            <div class="slide">KAWASAKI</div><div class="slide">AKT MOTOS</div><div class="slide">BAJAJ</div>
+            <div class="slide">TVS</div><div class="slide">HERO</div><div class="slide">AUTECO</div>
+            <div class="slide">YAMAHA</div><div class="slide">HONDA</div><div class="slide">SUZUKI</div>
+            <div class="slide">KAWASAKI</div><div class="slide">AKT MOTOS</div><div class="slide">BAJAJ</div>
+            <div class="slide">TVS</div><div class="slide">HERO</div><div class="slide">AUTECO</div>
+        </div>
+    </div>
+
+    <section class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div onclick="filtrarPorCategoria('Empaque')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/empaques.webp" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Empaques</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Aceite')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/aceites.jpg" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Aceites</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Tornillo')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/tornillos.jpg" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Tornillos</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Switch')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/Switch.webp" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Switch</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Velocimetro')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/Velocimetro.webp" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Velocimetros</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Eje')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/Eje.jpeg" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Ejes</span>
+                </div>
+            </div>
+            
+
+            <div onclick="filtrarPorCategoria('Stop Trasero')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/stop.webp" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Stop Traseros</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Retenedor')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/reten.webp" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Retenedores</span>
+                </div>
+            </div>
+            <div onclick="filtrarPorCategoria('Radio')" class="relative h-40 rounded-2xl overflow-hidden cursor-pointer border border-slate-800 hover:border-red-600 transition-all group">
+                <img src="/img/radio.jpg" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/40">
+                    <span class="font-logo text-white text-lg tracking-widest group-hover:text-red-600 transition-colors uppercase">Radios</span>
+                </div>
+            </div>
+         
+        </div>
+    </section>
+
     <section class="bg-slate-900/80 backdrop-blur-md sticky top-[80px] z-[50] py-6 border-y border-slate-800">
         <div class="container mx-auto px-4 max-w-4xl">
             <div class="relative group">
@@ -107,7 +180,6 @@
 
     <main id="productos" class="container mx-auto px-4 py-16">
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
-        
         <div id="pagination-controls" class="flex justify-center items-center mt-16 gap-3 flex-wrap"></div>
     </main>
 
@@ -158,7 +230,23 @@
             { id: 23, nombre: "Tornillo Manecilla Universal (X 100)", precio: 20000, stock: 100, imagen: "img/stok23.jpg" },
             { id: 24, nombre: "Tornillo Porta Sporcket Kit GN 125", precio: 20000, stock: 100, imagen: "img/stok24.jpg" },
             { id: 25, nombre: "Tornillo Porta Sporcket Kit GN 125 V2", precio: 20000, stock: 100, imagen: "img/stok25.jpg" },
-            { id: 26, nombre: "Tapa Tanque AX100 GF", precio: 20000, stock: 100, imagen: "img/stok26.jpg" }
+            { id: 26, nombre: "Tapa Tanque AX100 GF", precio: 20000, stock: 100, imagen: "img/stok26.jpg" },
+            { id: 27, nombre: "Switch Encendido ECO 100 GF", precio: 20000, stock: 100, imagen: "img/stok27.jpg" },
+            { id: 28, nombre: "Switch Encendido GN 125 GF", precio: 20000, stock: 100, imagen: "img/stok28.jpg" },
+            { id: 29, nombre: "Switch Encendido YBR 125 GF", precio: 20000, stock: 100, imagen: "img/stok29.jpg" },
+            { id: 30, nombre: "Switch Encendido Completo AX100 GF", precio: 20000, stock: 100, imagen: "img/stok30.jpg" },
+            { id: 31, nombre: "Switch Encendido Completo DISCOVER 125 GF", precio: 20000, stock: 100, imagen: "img/stok31.jpg" },
+            { id: 32, nombre: "Switch Encendido Completo NXR 125/150 GF", precio: 20000, stock: 100, imagen: "img/stok32.jpg" },
+            { id: 33, nombre: "Stop Trasero CB110 GF", precio: 20000, stock: 100, imagen: "img/stok33.jpg" },
+            { id: 34, nombre: "Stop Trasero DT125 GF", precio: 20000, stock: 100, imagen: "img/stok34.jpg" },
+            { id: 35, nombre: "Stop Trasero TVS STAR HLX 125/150 GF", precio: 20000, stock: 100, imagen: "img/stok35.jpg" },
+            { id: 36, nombre: "Sello De Valvula PULSAR NS200 GF", precio: 20000, stock: 100, imagen: "img/stok36.jpg" },
+            { id: 37, nombre: "Retenedor 14*28*7 Eje Cambio AKT125 GF", precio: 20000, stock: 100, imagen: "img/stok37.jpg" },
+            { id: 38, nombre: "Retenedor 16*28*7 Eje Crank AKT125 GF", precio: 20000, stock: 100, imagen: "img/stok38.jpg" },
+            { id: 39, nombre: "Retenedor 31*43*10.5 Telescopio PULSAR 135 GF", precio: 20000, stock: 100, imagen: "img/stok39.jpg" },
+            { id: 40, nombre: "Retenedor 41*53*8/10.5 Telescopio FZ16 GF", precio: 20000, stock: 100, imagen: "img/stok40.jpg" },
+            { id: 41, nombre: "Radio 9G X 172MM PREMIUM GF", precio: 20000, stock: 100, imagen: "img/stok41.jpg" },
+            { id: 42, nombre: "Radio 8G X 162MM GF", precio: 20000, stock: 100, imagen: "img/stok42.jpg" }
         ];
 
         let paginaActual = 1;
@@ -168,7 +256,6 @@
         let currentQtyProduct = null;
         let currentQtyVal = 1;
 
-        // RENDERIZADO CON EFECTOS RESTAURADOS
         function renderProductos() {
             const grid = document.getElementById('product-grid');
             const inicio = (paginaActual - 1) * productosPorPagina;
@@ -194,12 +281,20 @@
             actualizarPaginador();
         }
 
+        // FUNCIÓN NUEVA PARA FILTRAR POR LAS TARJETAS DE CLASIFICACIÓN
+        function filtrarPorCategoria(termino) {
+            document.getElementById('search-input').value = termino;
+            listaMostrada = productos.filter(p => p.nombre.toLowerCase().includes(termino.toLowerCase()));
+            paginaActual = 1;
+            renderProductos();
+            window.scrollTo({top: document.getElementById('productos').offsetTop - 120, behavior: 'smooth'});
+        }
+
         function verImagen(src) {
             document.getElementById('modal-img').src = src;
             document.getElementById('image-modal').classList.remove('hidden');
         }
 
-        // PAGINADOR MEJORADO CON FLECHAS
         function actualizarPaginador() {
             const controles = document.getElementById('pagination-controls');
             const totalPaginas = Math.ceil(listaMostrada.length / productosPorPagina);
@@ -227,7 +322,6 @@
             window.scrollTo({top: document.getElementById('productos').offsetTop - 120, behavior: 'smooth'}); 
         }
 
-        // FUNCIONES DE CARRITO Y MODALES
         function openQtyModal(id) {
             currentQtyProduct = productos.find(p => p.id === id);
             currentQtyVal = 1;
